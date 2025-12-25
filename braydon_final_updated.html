@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quest Complete - Treasure Revealed!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --primary: #d4af37; --accent: #ff6b6b; --text: #e8e8e8; --dark: #0f0f1e; --treasure: #ffd700; }
+        body { font-family: 'Crimson Text', serif; background: var(--dark); color: var(--text); min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; overflow-x: hidden; }
+        body::before { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 20% 30%, rgba(212, 175, 55, 0.2) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(255, 215, 0, 0.15) 0%, transparent 50%), radial-gradient(circle at 50% 50%, rgba(255, 107, 107, 0.1) 0%, transparent 70%); z-index: 0; animation: pulse 10s ease-in-out infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes glow { 0%, 100% { filter: brightness(1); text-shadow: 0 0 40px rgba(212, 175, 55, 0.6); } 50% { filter: brightness(1.3); text-shadow: 0 0 60px rgba(212, 175, 55, 0.9); } }
+        @keyframes treasureGlow { 0%, 100% { box-shadow: 0 0 40px rgba(255, 215, 0, 0.5), inset 0 0 30px rgba(255, 215, 0, 0.1); } 50% { box-shadow: 0 0 60px rgba(255, 215, 0, 0.8), inset 0 0 40px rgba(255, 215, 0, 0.2); } }
+        .container { max-width: 900px; padding: 40px 20px; position: relative; z-index: 1; animation: fadeIn 1.5s ease-out; }
+        .ultimate-header { text-align: center; margin-bottom: 50px; animation: fadeIn 1.5s ease-out 0.5s backwards; }
+        .ultimate-title { font-family: 'Cinzel', serif; font-size: clamp(2.5rem, 6vw, 4rem); background: linear-gradient(135deg, var(--primary), var(--treasure), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 20px; animation: glow 3s ease-in-out infinite; }
+        .ultimate-subtitle { font-size: clamp(1.2rem, 3vw, 1.6rem); color: var(--primary); font-style: italic; text-shadow: 0 0 15px rgba(212, 175, 55, 0.4); }
+        .scroll-divider { width: 100%; height: 4px; background: linear-gradient(90deg, transparent, var(--primary), var(--treasure), var(--primary), transparent); margin: 50px 0; position: relative; }
+        .scroll-divider::before, .scroll-divider::after { content: '◆'; position: absolute; top: 50%; transform: translateY(-50%); color: var(--primary); font-size: 1.5rem; }
+        .scroll-divider::before { left: -15px; } .scroll-divider::after { right: -15px; }
+        .final-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; margin: 50px 0; }
+        .final-stat { background: rgba(26, 26, 46, 0.7); border: 2px solid var(--primary); border-radius: 10px; padding: 25px 15px; text-align: center; }
+        .final-stat-label { font-size: clamp(0.85rem, 2vw, 1rem); color: #aaa; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px; }
+        .final-stat-value { font-family: 'Cinzel', serif; font-size: clamp(1.5rem, 3vw, 2.2rem); color: var(--primary); text-shadow: 0 0 10px rgba(212, 175, 55, 0.4); }
+        .treasure-reveal { background: linear-gradient(135deg, rgba(26, 26, 46, 0.95), rgba(15, 15, 30, 0.95)); border: 4px solid var(--treasure); border-radius: 15px; padding: 50px 30px; margin: 40px 0; text-align: center; animation: treasureGlow 3s ease-in-out infinite; position: relative; }
+        .treasure-title { font-family: 'Cinzel', serif; font-size: clamp(2rem, 4vw, 2.8rem); color: var(--treasure); margin-bottom: 30px; text-shadow: 0 0 20px rgba(255, 215, 0, 0.5); }
+        .treasure-list { background: rgba(0, 0, 0, 0.7); border: 3px solid var(--treasure); border-radius: 12px; padding: 40px 30px; margin: 30px 0; text-align: left; }
+        .treasure-item { font-size: clamp(1.1rem, 2.5vw, 1.4rem); color: var(--treasure); margin: 15px 0; padding-left: 40px; position: relative; }
+        .treasure-item::before { content: '💎'; position: absolute; left: 0; font-size: 1.5rem; }
+        .location-box { background: linear-gradient(135deg, rgba(255, 107, 107, 0.2), rgba(212, 175, 55, 0.2)); border: 3px solid var(--accent); border-radius: 15px; padding: 50px 30px; margin: 50px 0; box-shadow: 0 20px 60px rgba(255, 107, 107, 0.3); }
+        .location-title { font-family: 'Cinzel', serif; font-size: clamp(1.8rem, 4vw, 2.5rem); color: var(--accent); margin-bottom: 30px; text-align: center; text-shadow: 0 0 20px rgba(255, 107, 107, 0.5); }
+        .location-clue { font-size: clamp(1.2rem, 3vw, 1.6rem); line-height: 2; text-align: center; color: var(--text); font-style: italic; margin: 20px 0; }
+        .final-location { font-family: 'Cinzel', serif; font-size: clamp(1.8rem, 4vw, 2.5rem); color: var(--treasure); margin: 30px 0; text-align: center; text-shadow: 0 0 25px rgba(255, 215, 0, 0.6); animation: glow 2s ease-in-out infinite; }
+        .heart-message { background: rgba(26, 26, 46, 0.8); border: 2px solid var(--accent); border-radius: 12px; padding: 45px 30px; margin: 50px 0; line-height: 2; font-size: clamp(1.05rem, 2.5vw, 1.35rem); text-align: center; box-shadow: 0 10px 40px rgba(255, 107, 107, 0.2); }
+        .heart-message p { margin-bottom: 25px; }
+        .signature { font-style: italic; color: var(--primary); font-size: clamp(1.2rem, 2.5vw, 1.5rem); margin-top: 35px; font-family: 'Cinzel', serif; }
+        .final-flourish { text-align: center; margin-top: 50px; font-size: clamp(2rem, 4vw, 3rem); color: var(--primary); animation: float 3s ease-in-out infinite; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @media (max-width: 768px) { .container { padding: 20px 15px; } .final-stats { grid-template-columns: 1fr; } .treasure-list, .location-box, .heart-message { padding: 30px 20px; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="ultimate-header">
+            <h1 class="ultimate-title">⚔️ LEGENDARY QUEST COMPLETE! ⚔️</h1>
+            <p class="ultimate-subtitle">The Ultimate Champion Has Emerged</p>
+        </div>
+
+        <div class="scroll-divider"></div>
+
+        <div class="final-stats">
+            <div class="final-stat"><div class="final-stat-label">Quest Level</div><div class="final-stat-value">MAX</div></div>
+            <div class="final-stat"><div class="final-stat-label">Final XP</div><div class="final-stat-value">500 / 500</div></div>
+            <div class="final-stat"><div class="final-stat-label">Progress</div><div class="final-stat-value">100%</div></div>
+        </div>
+
+        <div class="treasure-reveal">
+            <h2 class="treasure-title">👑 YOUR CHRISTMAS TREASURE HOARD 👑</h2>
+            <p style="font-size: clamp(1.1rem, 2.5vw, 1.4rem); margin-bottom: 30px; color: #ccc;">
+                You have proven yourself worthy! Your legendary loot awaits:
+            </p>
+
+            <div class="treasure-list">
+                <div class="treasure-item">2 × $50 Petro-Canada Gift Cards ($100 total)</div>
+                <div class="treasure-item">4 × $25 McDonald's Gift Cards ($100 total)</div>
+                <div class="treasure-item">1 × $50 Silver Scissors Gift Card</div>
+                <div class="treasure-item">1 × $100 Amazon.ca Gift Card</div>
+            </div>
+
+            <p style="font-size: clamp(1.3rem, 3vw, 1.8rem); color: var(--treasure); margin-top: 30px; font-family: 'Cinzel', serif;">
+                <strong>Total Value: $350.00 CAD</strong>
+            </p>
+        </div>
+
+        <div class="scroll-divider"></div>
+
+        <div class="location-box">
+            <h2 class="location-title">🗺️ WHERE IS YOUR TREASURE? 🗺️</h2>
+            
+            <p class="location-clue">
+                "In the workshop where wood meets will,<br>
+                Where tools rest and time stands still,<br>
+                Upon the keys where melodies sleep,<br>
+                Your treasure chest awaits to reap."
+            </p>
+
+            <div class="scroll-divider"></div>
+
+            <p style="font-size: clamp(1.1rem, 2.5vw, 1.3rem); color: #ccc; margin: 30px 0;">
+                Your Christmas treasure is hidden:
+            </p>
+
+            <div class="final-location">
+                📍 IN THE SHOP<br>ON THE PIANO 🎹
+            </div>
+
+            <p style="font-size: clamp(1rem, 2vw, 1.2rem); color: #aaa; margin-top: 30px; font-style: italic;">
+                All your gift cards are waiting there in an envelope.<br>
+                Go claim your legendary loot, Champion!
+            </p>
+        </div>
+
+        <div class="scroll-divider"></div>
+
+        <div class="heart-message">
+            <p>Braydon,</p>
+            
+             <p>I know this Christmas is different this year.</p>
+            
+            <p>But as you journeyed through this quest—solving ciphers like the ones we've shared over the years, proving your skills with each puzzle—I hope you felt my love for you is still the same.</p>
+            
+            <p>I'm so proud of the person you've become—your intelligence, your creativity, your passion for the worlds you explore through games and audiobooks. No matter what happens in life, you are my son and I love you with all my heart.</p>
+            
+            <p>I hope this treasure helps you build your own adventures in the year ahead. Whether it's fuel for road trips, meals with friends, a fresh haircut, or anything else that brings you joy—it's yours.</p>
+            
+            <p class="signature">Merry Christmas, Braydon.<br>With all my love,<br>Dad</p>
+        </div>
+
+        <div class="final-flourish">⚔️ ★ 🏆 ★ ⚔️</div>
+    </div>
+</body>
+</html>
